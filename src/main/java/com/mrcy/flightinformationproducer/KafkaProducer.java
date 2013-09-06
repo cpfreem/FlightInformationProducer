@@ -12,6 +12,7 @@ import java.util.Properties;
 import kafka.javaapi.producer.Producer;
 import kafka.javaapi.producer.ProducerData;
 import kafka.producer.ProducerConfig;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,25 +39,19 @@ public class KafkaProducer {
             List<FlightScheduleData> flightScheduleData = new ArrayList<FlightScheduleData>();
             flightScheduleData = flightScheduleScraper.getFlightSchedules(modesData.get(i).getFlightNumber());
 
-            // A flight number could have 1 to many flight schedules associated with it
-            for (int j = 0; j < flightScheduleData.size(); j++) {
-                JSONObject temp = modesData.get(i).getJSONObject();
-
-                // Loop through each flight schedule and add it to the flight
-                Iterator keys = flightScheduleData.get(j).getJSONObject().keys();
-                while (keys.hasNext()) {
-                    String keyValue = keys.next().toString();
-                    temp.put(keyValue, flightScheduleData.get(j).getJSONObject().get(keyValue));
-                    keys.remove();
-                }
-
-                // Put flight with each schedule attached on the Kafka Queue
-                ProducerData<String, String> data = new ProducerData<String, String>("test", temp.toString());
-                producer.send(data);
-
-                System.out.println(temp.toString());
+            JSONArray fsd = new JSONArray();
+            for(int j = 0; j < flightScheduleData.size(); j++) {
+                fsd.put(flightScheduleData.get(j).getJSONObject());
             }
+            
+            JSONObject merge = modesData.get(i).getJSONObject();
+            merge.put("SCHEDULE", fsd);
 
+            // Put flight with each schedule attached on the Kafka Queue
+            ProducerData<String, String> data = new ProducerData<String, String>("test", merge.toString());
+            producer.send(data);
+
+            System.out.println(merge.toString());
         }
 
     }
