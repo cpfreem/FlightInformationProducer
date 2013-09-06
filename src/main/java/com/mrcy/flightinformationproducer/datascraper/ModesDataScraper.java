@@ -25,7 +25,7 @@ public class ModesDataScraper {
         List<ModesData> aircraftList = new ArrayList<ModesData>();
 
         HttpClient client = new DefaultHttpClient();
-        String getURL = "http://planefinder.net/endpoints/update.php?faa=1&bounds=44.243666%2C-86.448562%2C45.177625%2C-85.075271";
+        String getURL = "http://planefinder.net/endpoints/update.php?faa=1&bounds=37.729817%2C-98.840955%2C52.451268%2C-76.868299";
         HttpGet get = new HttpGet(getURL);
         get.setHeader("Referer", "http://planefinder.net/");
         get.setHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130807 Firefox/17.0");
@@ -43,7 +43,7 @@ public class ModesDataScraper {
             //  AIRLINE (three characters), ORIG-DEST-FINAL (Using three letters with a dash in between),
 
             JSONObject response = new JSONObject(EntityUtils.toString(resEntityGet));
-            JSONObject aircraft = response.getJSONObject("planes").getJSONObject("1");
+            JSONObject aircraft = (JSONObject) response.getJSONArray("planes").get(0);
 
             Iterator keys = aircraft.keys();
             while (keys.hasNext()) {

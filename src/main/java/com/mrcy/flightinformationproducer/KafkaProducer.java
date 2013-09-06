@@ -22,7 +22,7 @@ import org.json.JSONObject;
  */
 public class KafkaProducer {
 
-    // This will be painfully slow for a large number of flights since we have three nested loops
+    // This will be painfully slow for a large number of flights since we have two nested loops
     public static void main(String[] args) throws IOException, JSONException, Exception {
         Properties props = new Properties();
         props.put("zk.connect", "127.0.0.1:2181");

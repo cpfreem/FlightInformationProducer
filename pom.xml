@@ -37,7 +37,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>kafka</groupId>
+            <groupId>org.apache.kafka</groupId>
             <artifactId>kafka</artifactId>
             <version>0.7.2</version>
             <type>jar</type>
