@@ -159,7 +159,7 @@ public class ModesData {
                "\nALTITUDE = " + this.altitude.toString() +
                "\nHEADING = " + this.heading.toString() +
                "\nSPEAD = " + this.spead.toString() +
-               "\nTIME_STAMP = " + this.timeStamp.toString() +
+               "\nTIME = " + this.timeStamp.toString() +
                "\nAIRLINE = " + this.airline +
                "\nSTOPS = " + this.stops;
     }
@@ -175,7 +175,7 @@ public class ModesData {
         flight.put("ALTITUDE", this.altitude);
         flight.put("HEADING", this.heading);
         flight.put("SPEED", this.spead);
-        flight.put("TIME_STAMP", this.timeStamp);
+        flight.put("TIME", this.timeStamp);
         flight.put("AIRLINE", this.airline);
         flight.put("STOPS", this.stops);
         

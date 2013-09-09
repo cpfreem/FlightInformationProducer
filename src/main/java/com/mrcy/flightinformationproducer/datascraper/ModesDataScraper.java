@@ -43,42 +43,50 @@ public class ModesDataScraper {
             //  AIRLINE (three characters), ORIG-DEST-FINAL (Using three letters with a dash in between),
 
             JSONObject response = new JSONObject(EntityUtils.toString(resEntityGet));
-            JSONObject aircraft = (JSONObject) response.getJSONArray("planes").get(0);
 
-            Iterator keys = aircraft.keys();
-            while (keys.hasNext()) {
-                String keyValue = keys.next().toString();
-                JSONArray values = aircraft.getJSONArray(keyValue);
+//            for (int z = 0; z < response.getJSONArray("planes").length(); z++) {
+            for (int z = 0; z < 1; z++) {
+                int count = 0;
+                JSONObject aircraft = (JSONObject) response.getJSONArray("planes").get(z);
 
-                ModesData modesData = new ModesData();
+                Iterator keys = aircraft.keys();
+                while (keys.hasNext()) {
+                    String keyValue = keys.next().toString();
+                    JSONArray values = aircraft.getJSONArray(keyValue);
 
-                modesData.setHexCode(keyValue);
-                modesData.setAircraftType(values.get(0).toString());
-                modesData.setRegistrationNumber(values.get(1).toString());
-                modesData.setFlightNumber(values.get(2).toString());
+                    ModesData modesData = new ModesData();
 
-                modesData.setLatitude(new Double(values.get(3).toString()));
-                modesData.setLongitude(new Double(values.get(4).toString()));
-                modesData.setAltitude(new Double(values.get(5).toString()));
-                modesData.setHeading(new Double(values.get(6).toString()));
-                modesData.setSpead(new Double(values.get(7).toString()));
-                modesData.setTimeStamp(new Long(values.get(8).toString()));
-                modesData.setAirline(values.get(9).toString());
-                modesData.setStops(values.get(10).toString());
+                    modesData.setHexCode(keyValue);
+                    modesData.setAircraftType(values.get(0).toString());
+                    modesData.setRegistrationNumber(values.get(1).toString());
+                    modesData.setFlightNumber(values.get(2).toString());
 
-                aircraftList.add(modesData);
-                keys.remove();
+                    modesData.setLatitude(new Double(values.get(3).toString()));
+                    modesData.setLongitude(new Double(values.get(4).toString()));
+                    modesData.setAltitude(new Double(values.get(5).toString()));
+                    modesData.setHeading(new Double(values.get(6).toString()));
+                    modesData.setSpead(new Double(values.get(7).toString()));
+                    modesData.setTimeStamp(new Long(values.get(8).toString()));
+                    modesData.setAirline(values.get(9).toString());
+                    modesData.setStops(values.get(10).toString());
+
+                    aircraftList.add(modesData);
+                    count++;
+                    keys.remove();
+                }
+                System.out.println("Found " + count + " aircraft at planes index: " + z);
             }
         }
+        System.out.println("Returning " + aircraftList.size() + " aircraft");
         return aircraftList;
     }
-    
+
     public static void main(String[] args) throws IOException, JSONException {
         ModesDataScraper modesDataScraper = new ModesDataScraper();
-        
+
         List<ModesData> data = modesDataScraper.getModesData();
-        
-        for( int i = 0; i < data.size(); i++) {
+
+        for (int i = 0; i < data.size(); i++) {
             System.out.println(data.get(i).getJSONObject().toString());
         }
     }
