@@ -21,6 +21,8 @@ import org.jsoup.select.Elements;
  */
 public class FlightScheduleScraper {
 
+    private AirportDataReader airportData = new AirportDataReader();
+
     /**
      *
      * @param flightId Airline code and flight# for instance: UAL5842
@@ -58,11 +60,30 @@ public class FlightScheduleScraper {
                     Long arrivalTime = scheduleFormat.parse(arrivalString).getTime();
 
                     FlightScheduleData schedule = new FlightScheduleData(origin, destination, departureTime, arrivalTime);
+                    if (destination.length() > 1) {
+                        try {
+                        String lookup = destination.substring(destination.indexOf("(")+1, destination.indexOf(")"));
+                        lookup = lookup.substring(1, lookup.length());
+                        AirportInfo airportInfo = airportData.getAirportInfo(lookup);
+                        if(airportInfo != null){
+                            schedule.setDestLat(airportInfo.getLat());
+                            schedule.setDestLon(airportInfo.getLon());
+                        } else {
+                            System.out.println("Could not find airport: "+lookup);
+                        }
+                        } catch(Exception e){
+                            System.out.println("Error looking up destination lat, lon");
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("Invalid destination: "+destination);
+                    }
+
                     flightSchedules.add(schedule);
 
                 }
             } catch (Exception e) {
-                System.out.println("Error parsing out schedule data for "+flightId);
+                System.out.println("Error parsing out schedule data for " + flightId);
             }
         }
         return flightSchedules;
