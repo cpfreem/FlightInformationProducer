@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class AirportDataReader {
 
-    private String dataFile = "airportData.csv";
+    private String dataFile = "allAirports.csv";
     private Map<String, AirportInfo> airportInfoMap = new HashMap<String,AirportInfo>();
 
     public AirportDataReader(){
@@ -26,7 +26,7 @@ public class AirportDataReader {
         return airportInfoMap.get(airportName);
     }
     
-    public void readFile() {
+    private void readFile() {
         BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + dataFile)));
         try {
             String line = br.readLine();
@@ -42,7 +42,7 @@ public class AirportDataReader {
                 double lon = parseLongitude(lonString);
                 AirportInfo airportInfo = new AirportInfo(airport, lat, lon);
                 airportInfoMap.put(airport, airportInfo);
-                System.out.println(airport+" lat: "+lat+" ; "+lon);
+                //System.out.println(airport+" lat: "+lat+" ; "+lon);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +77,7 @@ public class AirportDataReader {
     
     public static void main(String[] args){
         AirportDataReader dataReader = new AirportDataReader();
-        dataReader.readFile();
+        System.out.println(dataReader.getAirportInfo("DTW").toString());
+        System.out.println(dataReader.getAirportInfo("YOW").toString());
     }
 }

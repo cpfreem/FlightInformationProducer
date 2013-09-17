@@ -4,6 +4,9 @@
  */
 package com.mrcy.flightinformationproducer.datascraper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author jwalton
@@ -43,5 +46,17 @@ public class AirportInfo {
         this.lon = lon;
     }
     
+    @Override
+    public String toString() {
+        return "name=" + this.name + ", " + "lat=" + this.lat + ", " + "lon=" + this.lon;
+    }
     
+    public Map<String, Object> toMap() {
+        Map<String, Object> schedule = new HashMap();
+        schedule.put("NAME", this.name);
+        schedule.put("LATITUDE", this.lat);
+        schedule.put("LONGITUDE", this.lon);
+
+        return schedule;
+    }
 }

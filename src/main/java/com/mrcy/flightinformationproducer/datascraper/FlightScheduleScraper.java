@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 public class FlightScheduleScraper {
 
     private AirportDataReader airportData = new AirportDataReader();
+    private List<AirportInfo> airportsInUse = new ArrayList<>();
 
     /**
      *
@@ -68,6 +69,7 @@ public class FlightScheduleScraper {
                         if(airportInfo != null){
                             schedule.setDestLat(airportInfo.getLat());
                             schedule.setDestLon(airportInfo.getLon());
+                            airportsInUse.add(airportInfo);
                         } else {
                             System.out.println("Could not find airport: "+lookup);
                         }
@@ -89,6 +91,10 @@ public class FlightScheduleScraper {
         return flightSchedules;
     }
 
+    public List<AirportInfo> getAirportsInUse(){
+        return this.airportsInUse;
+    }
+    
     private String convertToGmt(String timeString) {
         if (timeString.indexOf("CDT") >= 0) {
             timeString = timeString.replaceAll("CDT", "-0500");

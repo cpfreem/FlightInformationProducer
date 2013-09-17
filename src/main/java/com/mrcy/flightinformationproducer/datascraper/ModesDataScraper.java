@@ -44,8 +44,8 @@ public class ModesDataScraper {
 
             JSONObject response = new JSONObject(EntityUtils.toString(resEntityGet));
 
-//            for (int z = 0; z < response.getJSONArray("planes").length(); z++) {
-            for (int z = 0; z < 1; z++) {
+            for (int z = 0; z < response.getJSONArray("planes").length(); z++) {
+//            for (int z = 0; z < 1; z++) {
                 int count = 0;
                 JSONObject aircraft = (JSONObject) response.getJSONArray("planes").get(z);
 
@@ -85,6 +85,8 @@ public class ModesDataScraper {
         ModesDataScraper modesDataScraper = new ModesDataScraper();
 
         List<ModesData> data = modesDataScraper.getModesData();
+        
+        System.out.println("Number of flights detected: "+ data.size());
 
         for (int i = 0; i < data.size(); i++) {
             System.out.println(data.get(i).getJSONObject().toString());
